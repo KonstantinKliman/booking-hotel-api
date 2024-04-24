@@ -34,7 +34,7 @@ class VerificationEmailService implements IVerificationEmailService
             $this->tokenRepository->delete($checkIfTokenExists);
         }
         $token = Str::uuid();
-        $url = config('app.url') . '?token=' . $token . '&email=' . $email;
+        $url = config('app.url') . '/api/v1/auth/' . $token . '/' . $email;
         $data = [
             'email' => $email,
             'token' => $token,
@@ -105,10 +105,5 @@ class VerificationEmailService implements IVerificationEmailService
             'status' => 'success',
             'message' => 'Verification link send successfully'
         ]);
-    }
-
-    public function getTokenForRegisterResponse(string $email): string
-    {
-        return $this->tokenRepository->getTokenByEmail($email);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 

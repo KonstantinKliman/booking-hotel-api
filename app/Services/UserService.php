@@ -6,8 +6,6 @@ use App\Exceptions\User\EmailIsNotVerifiedException;
 use App\Exceptions\User\InvalidUserCredentialsException;
 use App\Http\Requests\Api\v1\User\LoginRequest;
 use App\Http\Requests\Api\v1\User\RegisterRequest;
-use App\Http\Requests\Api\v1\User\ResendEmailVerificationLinkRequest;
-use App\Http\Requests\Api\v1\User\VerifyEmailRequest;
 use App\Repositories\Interfaces\IUserRepository;
 use App\Services\Interfaces\IUserService;
 use App\Services\Interfaces\IVerificationEmailService;
@@ -43,7 +41,6 @@ class UserService implements IUserService
             'user' => [
                 'id' => $user->id,
                 'email' => $user->email,
-                'verifyEmailToken' => $this->service->getTokenForRegisterResponse($user->email)
             ]
         ];
     }
@@ -67,7 +64,7 @@ class UserService implements IUserService
             throw new EmailIsNotVerifiedException();
         }
 
-        if (!empty($user)){
+        if (!empty($user)) {
             if (Auth::attempt($data)) {
                 return [
                     'message' => 'User successfully logged in.',
@@ -77,15 +74,5 @@ class UserService implements IUserService
         }
 
         throw new InvalidUserCredentialsException();
-    }
-
-    public function verifyUserEmail(VerifyEmailRequest $request)
-    {
-        return $this->service->verifyEmail($request->validated('email'), $request->validated('token'));
-    }
-
-    public function resendVerificationLink(ResendEmailVerificationLinkRequest $request)
-    {
-        return $this->service->resendLink($request->validated('email'));
     }
 }

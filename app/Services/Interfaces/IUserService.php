@@ -12,8 +12,4 @@ interface IUserService
     public function register(RegisterRequest $request): array;
 
     public function login(LoginRequest $request): array;
-
-    public function verifyUserEmail(VerifyEmailRequest $request);
-
-    public function resendVerificationLink(ResendEmailVerificationLinkRequest $request);
 }

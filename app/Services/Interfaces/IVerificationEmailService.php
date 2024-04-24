@@ -18,6 +18,4 @@ interface IVerificationEmailService
     public function verifyEmail(string $email, string $token);
 
     public function resendLink(string $email);
-
-    public function getTokenForRegisterResponse(string $email): string;
 }
