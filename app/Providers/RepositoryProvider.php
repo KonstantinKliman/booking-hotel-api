@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\EmailVerificationTokenRepository;
+use App\Repositories\Interfaces\IEmailVerificationTokenRepository;
 use App\Repositories\Interfaces\IProfileRepository;
 use App\Repositories\Interfaces\IUserRepository;
 use App\Repositories\ProfileRepository;
@@ -17,6 +19,7 @@ class RepositoryProvider extends ServiceProvider
     {
         $this->app->bind(IUserRepository::class, UserRepository::class);
         $this->app->bind(IProfileRepository::class, ProfileRepository::class);
+        $this->app->bind(IEmailVerificationTokenRepository::class, EmailVerificationTokenRepository::class);
     }
 
     /**

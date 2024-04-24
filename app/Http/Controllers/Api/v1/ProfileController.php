@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\DTO\ProfileDTO;
+use App\Enums\AccountType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\Profile\CreateProfileRequest;
+use App\Http\Requests\Api\v1\Profile\UpdateProfileRequest;
 use App\Services\Interfaces\IProfileService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class ProfileController extends Controller
@@ -17,48 +20,23 @@ class ProfileController extends Controller
         $this->service = $service;
     }
 
-    public function store(CreateProfileRequest $request)
+    public function create(CreateProfileRequest $request): JsonResponse
     {
-        $dto = new ProfileDTO(
-            Arr::get($request->validated(), 'firstName'),
-            Arr::get($request->validated(), 'lastName'),
-            Arr::get($request->validated(), 'phone'),
-            Arr::get($request->validated(), 'dob'),
-            Arr::get($request->validated(), 'accountType'),
-            Arr::get($request->validated(), 'country'),
-            Arr::get($request->validated(), 'city'),
-            Arr::get($request->validated(), 'fullAddress'),
-        );
-        $profile = $this->service->store($dto, $request->user()->id);
-        return response()->json([
-            'message' => $profile->wasRecentlyCreated ? 'Profile created successfully.' : 'Profile has already been created.',
-            'profile' => [
-                'id' => $profile->id,
-                'firstName' => $profile->first_name,
-                'lastName' => $profile->last_name,
-                'phone' => $profile->phone,
-                'dob' => $profile->dob,
-                'accountType' => $profile->account_type,
-                'country' => $profile->country,
-                'city' => $profile->city,
-                'fullAddress' => $profile->full_address
-            ]
-        ], 201);
+        return response()->json($this->service->create($request), 201);
     }
 
-    public function show(int $id)
+    public function get(int $id): JsonResponse
     {
-        $profileDto = $this->service->show($id);
-        return response()->json([
-            'profile' => [
-                'id' => $id,
-                'data' => $profileDto
-            ]
-        ]);
+        return response()->json($this->service->getById($id));
     }
 
-    public function update(int $id)
+    public function update(UpdateProfileRequest $request,int $id)
     {
-        $this->service->update($id);
+        return response()->json($this->service->update($request, $id));
+    }
+
+    public function delete(int $id)
+    {
+        return response()->json($this->service->delete($id));
     }
 }

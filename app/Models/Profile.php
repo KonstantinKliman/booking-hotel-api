@@ -15,9 +15,10 @@ class Profile extends Model
         'user_id',
         'first_name',
         'last_name',
+        'dob',
         'phone',
         'account_type',
-        'dob',
+        'company_name',
         'country',
         'city',
         'full_address'

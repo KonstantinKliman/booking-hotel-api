@@ -8,7 +8,11 @@ interface IProfileRepository
 {
     public function create(array $data): Profile;
 
-    public function show(int $id);
+    public function getById(int $id);
 
-    public function exists(int $id): bool;
+    public function isExistsById(int $id): bool;
+
+    public function update(array $data, int $id);
+
+    public function delete(int $id): void;
 }

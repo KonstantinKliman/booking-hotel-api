@@ -19,12 +19,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->date('dob');
             $table->string('phone');
             $table->enum('account_type', [AccountType::Customer->value, AccountType::Owner->value]);
-            $table->date('dob');
+            $table->string('company_name')->nullable();
             $table->string('country');
             $table->string('city');
-            $table->string('full_address')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
