@@ -12,4 +12,6 @@ interface IUserService
     public function register(RegisterRequest $request): array;
 
     public function login(LoginRequest $request): array;
+
+    public function setUserRole(int $userId, int $roleId): void;
 }

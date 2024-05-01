@@ -6,6 +6,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('profile')->middleware(['auth:sanctum', 'verified-email'])->group(function () {
     Route::post('/create', [ProfileController::class, 'create']);
     Route::get('/{id}', [ProfileController::class, 'get']);
-    Route::put('/{id}', [ProfileController::class, 'update']);
+    Route::patch('/{id}', [ProfileController::class, 'update']);
     Route::delete('/{id}', [ProfileController::class, 'delete']);
 });

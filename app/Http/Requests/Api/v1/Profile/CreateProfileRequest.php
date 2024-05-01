@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api\v1\Profile;
 
-use App\Enums\AccountType;
+use App\Enums\RoleType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,10 +15,11 @@ class CreateProfileRequest extends FormRequest
             'lastName' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'regex:/^\+\d{11}$/'],
             'dob' => ['required', 'date', 'date_format:d-m-Y'],
-            'accountType' => ['required', 'string', Rule::enum(AccountType::class)],
+            'roleType' => ['required', 'integer', Rule::enum(RoleType::class)], // 1 - owner, 2 - customer
+            'companyName' => ['nullable', 'string', 'max:255', Rule::requiredIf(fn () => $this->input('roleType') === RoleType::Owner->value)], // Only required if roleType is 'owner'
             'country' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
-            'fullAddress' => ['nullable', 'string', Rule::requiredIf(fn () => $this->input('accountType') === AccountType::Owner->value)], // Only required if accountType is 'owner'
+            'fullAddress' => ['nullable', 'string', Rule::requiredIf(fn () => $this->input('roleType') === RoleType::Owner->value)], // Only required if roleType is 'owner'
         ];
     }
 }

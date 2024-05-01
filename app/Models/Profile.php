@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\AccountType;
+use App\Enums\RoleType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,15 +17,12 @@ class Profile extends Model
         'last_name',
         'dob',
         'phone',
-        'account_type',
-        'company_name',
+        'company_name', // if in users table role == 'owner'
         'country',
         'city',
-        'full_address'
     ];
 
     protected $casts = [
-        'account_type' => AccountType::class,
         'dob' => 'date:d-m-Y',
     ];
 

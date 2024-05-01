@@ -41,10 +41,7 @@ class VerificationEmailService implements IVerificationEmailService
             'expired_at' => now()->addMinutes(60)
         ];
         $saveToken = $this->tokenRepository->create($data);
-        if ($saveToken)
-        {
-            return $url;
-        }
+        return $url;
     }
 
     public function sendVerificationLink(User $user): void

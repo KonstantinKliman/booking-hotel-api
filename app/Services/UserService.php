@@ -75,4 +75,11 @@ class UserService implements IUserService
 
         throw new InvalidUserCredentialsException();
     }
+
+    public function setUserRole(int $userId, int $roleId): void
+    {
+        $user = $this->repository->getById($userId);
+        $user->role_id = $roleId;
+        $this->repository->save($user);
+    }
 }

@@ -2,15 +2,13 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Models\User;
-
-interface IUserRepository
+interface IRoomRepository
 {
     public function create(array $data);
 
-    public function get(string $email);
-
     public function getById(int $id);
 
-    public function save(User $user);
+    public function update(array $data, int $id);
+
+    public function delete(int $id);
 }

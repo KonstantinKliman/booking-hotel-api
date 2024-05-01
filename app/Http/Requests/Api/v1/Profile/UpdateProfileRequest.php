@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api\v1\Profile;
 
-use App\Enums\AccountType;
+use App\Enums\RoleType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,7 +17,7 @@ class UpdateProfileRequest extends FormRequest
             'dob' => ['date', 'date_format:d-m-Y'],
             'country' => ['string', 'max:255'],
             'city' => ['string', 'max:255'],
-            'fullAddress' => ['nullable', 'string', Rule::requiredIf(fn () => $this->user()->profile->account_type === AccountType::Owner)], // Only required if accountType is 'owner'
+            'fullAddress' => ['nullable', 'string', Rule::requiredIf(fn () => $this->user()->profile->account_type === RoleType::Owner)], // Only required if accountType is 'owner'
         ];
     }
 }

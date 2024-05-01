@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\AccountType;
+use App\Enums\RoleType;
 
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->date('dob');
             $table->string('phone');
-            $table->enum('account_type', [AccountType::Customer->value, AccountType::Owner->value]);
+            $table->enum('account_type', [RoleType::Customer->value, RoleType::Owner->value]);
             $table->string('company_name')->nullable();
             $table->string('country');
             $table->string('city');

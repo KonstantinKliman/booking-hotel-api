@@ -9,6 +9,7 @@ use App\Http\Requests\Api\v1\Profile\UpdateProfileRequest;
 use App\Models\Profile;
 use App\Repositories\Interfaces\IProfileRepository;
 use App\Services\Interfaces\IProfileService;
+use App\Services\Interfaces\IUserService;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
@@ -16,12 +17,15 @@ class ProfileService implements IProfileService
 {
     private IProfileRepository $repository;
 
+    private IUserService $userService;
+
     /**
      * @param IProfileRepository $repository
      */
-    public function __construct(IProfileRepository $repository)
+    public function __construct(IProfileRepository $repository, IUserService $userService)
     {
         $this->repository = $repository;
+        $this->userService = $userService;
     }
 
     /**
@@ -34,18 +38,17 @@ class ProfileService implements IProfileService
         if ($profile) {
             throw new ProfileAlreadyExistsException($profile);
         }
-        $data = [
+        $this->userService->setUserRole($request->user()->id, (int)$request->validated('roleType'));
+        $data = array_filter([
             'user_id' => $request->user()->id,
             'first_name' => Arr::get($request->validated(), 'firstName'),
             'last_name' => Arr::get($request->validated(), 'lastName'),
             'phone' => Arr::get($request->validated(), 'phone'),
             'dob' => Carbon::createFromFormat('d-m-Y', Arr::get($request->validated(), 'dob'))->format('Y-m-d'),
-            'account_type' => Arr::get($request->validated(), 'accountType'),
             'company_name' => Arr::get($request->validated(), 'companyName'),
             'country' => Arr::get($request->validated(), 'country'),
             'city' => Arr::get($request->validated(), 'city'),
-            'full_address' => Arr::get($request->validated(), 'fullAddress'),
-        ];
+        ]);
         $profile = $this->repository->create($data);
         return [
             'message' => $profile->wasRecentlyCreated ? 'Profile created successfully.' : 'Profile has already been created.',
@@ -55,11 +58,9 @@ class ProfileService implements IProfileService
                 'lastName' => $profile->last_name,
                 'phone' => $profile->phone,
                 'dob' => $profile->dob,
-                'accountType' => $profile->account_type,
                 'companyName' => $profile->company_name,
                 'country' => $profile->country,
                 'city' => $profile->city,
-                'fullAddress' => $profile->full_address
             ]
         ];
     }
@@ -93,11 +94,9 @@ class ProfileService implements IProfileService
             'lastName' => Arr::get($profile, 'last_name'),
             'dob' => Arr::get($profile, 'dob'),
             'phone' => Arr::get($profile, 'phone'),
-            'accountType' => Arr::get($profile, 'account_type'),
             'companyName' => Arr::get($profile, 'company_name'),
             'country' => Arr::get($profile, 'country'),
             'city' => Arr::get($profile, 'city'),
-            'fullAddress' => Arr::get($profile, 'full_address'),
         ];
     }
 
@@ -110,11 +109,9 @@ class ProfileService implements IProfileService
             'last_name' => Arr::get($request->validated(), 'lastName'),
             'dob' => Carbon::createFromFormat('d-m-Y', Arr::get($request->validated(), 'dob'))->format('Y-m-d'),
             'phone' => Arr::get($request->validated(), 'phone'),
-            'account_type' => Arr::get($request->validated(), 'accountType'),
             'company_name' => Arr::get($request->validated(), 'companyName'),
             'country' => Arr::get($request->validated(), 'country'),
             'city' => Arr::get($request->validated(), 'city'),
-            'full_address' => Arr::get($request->validated(), 'fullAddress'),
         ]);
 
         $this->repository->update($data, $id);
@@ -129,11 +126,9 @@ class ProfileService implements IProfileService
                 'lastName' => Arr::get($profile, 'last_name'),
                 'phone' => Arr::get($profile, 'phone'),
                 'dob' => Arr::get($profile, 'dob'),
-                'accountType' => Arr::get($profile, 'account_type'),
                 'companyName' => Arr::get($profile, 'company_name'),
                 'country' => Arr::get($profile, 'country'),
                 'city' => Arr::get($profile, 'city'),
-                'fullAddress' => Arr::get($profile, 'full_address'),
             ]
         ];
     }

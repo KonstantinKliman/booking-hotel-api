@@ -17,4 +17,14 @@ class UserRepository implements IUserRepository
     {
         return User::query()->where('email', $email)->first();
     }
+
+    public function getById(int $id)
+    {
+        return User::query()->find($id);
+    }
+
+    public function save(User $user)
+    {
+        $user->save();
+    }
 }
