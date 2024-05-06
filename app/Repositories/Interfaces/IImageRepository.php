@@ -26,4 +26,6 @@ interface IImageRepository
     public function deleteById(int $id);
 
     public function delete(Image $image);
+
+    public function getByHotelId(int $hotelId);
 }

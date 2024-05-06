@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoleType;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,6 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role_id' => RoleType::class,
         ];
     }
 
@@ -61,5 +63,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hotels(): HasMany
     {
         return $this->hasMany(Hotel::class);
+    }
+
+    public function bookings(): HasMany
+    {
+        $this->hasMany(Booking::class);
     }
 }

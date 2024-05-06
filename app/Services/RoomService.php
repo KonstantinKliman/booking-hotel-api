@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Http\Requests\Api\v1\Room\CreateRoomRequest;
 use App\Http\Requests\Api\v1\Room\UpdateRoomRequest;
+use App\Models\Hotel;
+use App\Repositories\Interfaces\IHotelRepository;
 use App\Repositories\Interfaces\IImageRepository;
 use App\Repositories\Interfaces\IRoomRepository;
 use App\Services\Interfaces\IRoomService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -28,39 +31,55 @@ class RoomService implements IRoomService
     public function create(CreateRoomRequest $request)
     {
         $data = [
-            'hotel_id' => Arr::get($request->validated(), 'hotelId'),
-            'type_id' => Arr::get($request->validated(), 'typeId'),
-            'description' => Arr::get($request->validated(), 'description'),
-            'price_per_night' => Arr::get($request->validated(), 'pricePerNight'),
-            'is_available' => Arr::get($request->validated(), 'isAvailable')
+            'hotel_id' => $request->validated('hotelId'),
+            'type_id' => $request->validated('typeId'),
+            'description' => $request->validated('description'),
+            'price_per_night' => $request->validated('pricePerNight'),
+            'is_available' => $request->validated('isAvailable')
         ];
-        return $this->repository->create($data);
+
+        $room = $this->repository->create($data);
+
+        return [
+            'id' => $room->id,
+            'hotelId' => $room->hotel_id,
+            'type' => $room->type->name,
+            'description' => $room->description,
+            'pricePerNight' => $room->price_per_night,
+            'isAvailable' => $room->is_available
+        ];
     }
 
     public function getById(int $roomId)
     {
         $room = $this->repository->getById($roomId);
-        $images = $room->images;
-        return $room;
+        return [
+            'id' => $room->id,
+            'hotelId' => $room->hotel_id,
+            'type' => $room->type->name,
+            'description' => $room->description,
+            'pricePerNight' => $room->price_per_night,
+            'isAvailable' => $room->is_available
+        ];
     }
 
     public function update(UpdateRoomRequest $request, int $roomId)
     {
         $data = array_filter([
-            'type_id' => Arr::get($request->validated(), 'typeId'),
-            'description' => Arr::get($request->validated(), 'description'),
-            'count' => Arr::get($request->validated(), 'count'),
-            'price_per_night' => Arr::get($request->validated(), 'pricePerNight'),
-            'is_available' => Arr::get($request->validated(), 'isAvailable')
+            'type_id' => $request->validated('typeId'),
+            'description' => $request->validated('description'),
+            'price_per_night' => $request->validated('pricePerNight'),
+            'is_available' => $request->validated('isAvailable')
         ]);
+
         $this->repository->update($data, $roomId);
+
         return $this->getById($roomId);
     }
 
-    public function delete(int $roomId)
+    public function delete(Request $request, int $roomId)
     {
         $room = $this->repository->getById($roomId);
-
         $imageIds = $room->images->pluck('id')->toArray();
         foreach ($imageIds as $imageId) {
             $this->deleteImage($roomId, $imageId);
@@ -80,13 +99,13 @@ class RoomService implements IRoomService
         return config('app.url') . '/';
     }
 
-    public function addImage(array $uploadedFiles, int $id)
+    public function addImage(Request $request, int $id)
     {
         $room = $this->repository->getById($id);
         $imagePath = self::HOTEL_IMAGE_PATH . $room->hotel->id . self::ROOM_IMAGE_PATH . $room->id;
         $arrayImagePaths = [];
 
-        foreach ($uploadedFiles as $file) {
+        foreach ($request->file() as $file) {
             $image = $this->imageRepository->create($file->getClientOriginalName(), self::STORAGE_PATH . $imagePath . '/');
             $this->imageRepository->attachRoomToImage($room, $image);
             $arrayImagePaths[] = $this->getAppUrl() . self::STORAGE_PATH . Storage::putFileAs($imagePath, $file, $file->getClientOriginalName());
@@ -95,7 +114,7 @@ class RoomService implements IRoomService
         return $arrayImagePaths;
     }
 
-    public function deleteImage(int $roomId, int $imageId)
+    public function deleteImage(Request $request, int $roomId, int $imageId)
     {
         $room = $this->repository->getById($roomId);
         $image = $this->imageRepository->getImage($imageId);

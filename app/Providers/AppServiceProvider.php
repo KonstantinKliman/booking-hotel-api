@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\BookingService;
 use App\Services\HotelService;
+use App\Services\Interfaces\IBookingService;
 use App\Services\Interfaces\IHotelService;
 use App\Services\Interfaces\IProfileService;
 use App\Services\Interfaces\IRoomService;
@@ -26,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IVerificationEmailService::class, VerificationEmailService::class);
         $this->app->bind(IHotelService::class, HotelService::class);
         $this->app->bind(IRoomService::class, RoomService::class);
+        $this->app->bind(IBookingService::class, BookingService::class);
     }
 
     /**

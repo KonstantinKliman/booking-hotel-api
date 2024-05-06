@@ -22,9 +22,9 @@ class HotelController extends Controller
         return response()->json($this->service->create($request), 201);
     }
 
-    public function getById(int $id)
+    public function getById(int $hotelId)
     {
-        return response()->json($this->service->getById($id));
+        return response()->json($this->service->getById($hotelId));
     }
 
     public function list()
@@ -32,23 +32,23 @@ class HotelController extends Controller
         return response()->json($this->service->list());
     }
 
-    public function addImage(Request $request, int $id)
+    public function addImage(Request $request, int $hotelId)
     {
-        return response()->json($this->service->addImage($request->file(), $id));
+        return response()->json($this->service->addImage($request, $hotelId));
     }
 
-    public function deleteImage(int $hotelId, int $imageId)
+    public function deleteImage(Request $request, int $hotelId, int $imageId)
     {
-        return response()->json($this->service->deleteImage($hotelId, $imageId));
+        return response()->json($this->service->deleteImage($request, $hotelId, $imageId));
     }
 
-    public function update(UpdateHotelRequest $request, int $id)
+    public function update(UpdateHotelRequest $request, int $hotelId)
     {
-        return response()->json($this->service->update($request, $id));
+        return response()->json($this->service->update($request, $hotelId));
     }
 
-    public function delete(int $id)
+    public function delete(int $hotelId)
     {
-        return response()->json($this->service->delete($id));
+        return response()->json($this->service->delete($hotelId));
     }
 }

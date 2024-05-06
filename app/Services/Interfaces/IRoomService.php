@@ -4,6 +4,7 @@ namespace App\Services\Interfaces;
 
 use App\Http\Requests\Api\v1\Room\CreateRoomRequest;
 use App\Http\Requests\Api\v1\Room\UpdateRoomRequest;
+use Illuminate\Http\Request;
 
 interface IRoomService
 {
@@ -13,9 +14,9 @@ interface IRoomService
 
     public function update(UpdateRoomRequest $request, int $roomId);
 
-    public function delete(int $roomId);
+    public function delete(Request $request, int $roomId);
 
-    public function addImage(array $uploadedFiles, int $id);
+    public function addImage(Request $request, int $id);
 
-    public function deleteImage(int $roomId, int $imageId);
+    public function deleteImage(Request $request, int $roomId, int $imageId);
 }

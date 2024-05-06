@@ -55,4 +55,12 @@ class ImageRepository implements IImageRepository
     {
         $image->delete();
     }
+
+    public function getByHotelId(int $hotelId)
+    {
+        return Image::query()
+            ->join('hotel_image', 'hotel_image.image_id', '=', 'images.id')
+            ->where('hotel_image.hotel_id', $hotelId)
+            ->get();
+    }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Repositories\BookingRepository;
 use App\Repositories\EmailVerificationTokenRepository;
 use App\Repositories\HotelRepository;
 use App\Repositories\ImageRepository;
+use App\Repositories\Interfaces\IBookingRepository;
 use App\Repositories\Interfaces\IEmailVerificationTokenRepository;
 use App\Repositories\Interfaces\IHotelRepository;
 use App\Repositories\Interfaces\IImageRepository;
@@ -29,6 +31,7 @@ class RepositoryProvider extends ServiceProvider
         $this->app->bind(IHotelRepository::class, HotelRepository::class);
         $this->app->bind(IImageRepository::class, ImageRepository::class);
         $this->app->bind(IRoomRepository::class, RoomRepository::class);
+        $this->app->bind(IBookingRepository::class, BookingRepository::class);
     }
 
     /**

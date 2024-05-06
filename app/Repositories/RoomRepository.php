@@ -15,7 +15,7 @@ class RoomRepository implements IRoomRepository
 
     public function getById(int $id)
     {
-        return Room::query()->where('id', $id)->first();
+        return Room::query()->where('id', $id)->firstOrFail();
     }
 
     public function update(array $data, int $id)

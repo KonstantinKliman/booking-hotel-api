@@ -32,19 +32,19 @@ class RoomController extends Controller
         return response()->json($this->service->update($request, $roomId));
     }
 
-    public function delete(int $roomId)
+    public function delete(Request $request, int $roomId)
     {
-        return response()->json($this->service->delete($roomId));
+        return response()->json($this->service->delete($request, $roomId));
     }
 
-    public function addImage(Request $request, int $id)
+    public function addImage(Request $request, int $roomId)
     {
-        return response()->json($this->service->addImage($request->file(), $id));
+        return response()->json($this->service->addImage($request, $roomId));
     }
 
-    public function deleteImage(int $roomId, int $imageId)
+    public function deleteImage(Request $request, int $roomId, int $imageId)
     {
-        return response()->json($this->service->deleteImage($roomId, $imageId));
+        return response()->json($this->service->deleteImage($request, $roomId, $imageId));
     }
 
 }

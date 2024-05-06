@@ -2,12 +2,14 @@
 
 namespace App\Enums;
 
-//Одноместный номер (Single room)
-//Двухместный номер (Double room)
-//Номер с двумя отдельными кроватями (Twin room)
-//Люкс (Suite)
-//Стандартный номер (Standard room)
-//Семейный номер (Family room)
+/*
+ * Одноместный номер (Single room)
+ * Двухместный номер (Double room)
+ * Номер с двумя отдельными кроватями (Twin room)
+ * Люкс (Suite)
+ * Стандартный номер (Standard room)
+ * Семейный номер (Family room)
+*/
 
 enum RoomType: int
 {

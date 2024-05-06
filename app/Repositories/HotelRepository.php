@@ -8,9 +8,9 @@ use App\Repositories\Interfaces\IHotelRepository;
 class HotelRepository implements IHotelRepository
 {
 
-    public function create(array $data): Hotel
+    public function create(array $data)
     {
-        return Hotel::create($data);
+        return Hotel::create($data)->toArray();
     }
 
     public function getById(int $id)
@@ -35,6 +35,6 @@ class HotelRepository implements IHotelRepository
 
     public function all()
     {
-        return Hotel::all()->toArray();
+        return Hotel::all();
     }
 }

@@ -7,8 +7,11 @@ use App\Exceptions\User\ExpiredEmailVerificationTokenException;
 use App\Exceptions\User\FailedEmailVerificationTokenException;
 use App\Exceptions\User\InvalidEmailVerificationTokenException;
 use App\Exceptions\User\InvalidUserCredentialsException;
-use App\Exceptions\User\InvalidUserRoleException;
+use App\Http\Middleware\CheckBookingOwnership;
 use App\Http\Middleware\CheckEmailIsVerifiedMiddleware;
+use App\Http\Middleware\CheckHotelOwnership;
+use App\Http\Middleware\CheckRoomOwnership;
+use App\Http\Middleware\CheckUserRoleIsCustomerMiddleware;
 use App\Http\Middleware\CheckUserRoleIsOwnerMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -24,7 +27,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'verified-email' => CheckEmailIsVerifiedMiddleware::class,
-            'owner-role' => CheckUserRoleIsOwnerMiddleware::class
+            'owner-role' => CheckUserRoleIsOwnerMiddleware::class,
+            'customer-role' => CheckUserRoleIsCustomerMiddleware::class,
+            'check-hotel-ownership' => CheckHotelOwnership::class,
+            'check-room-ownership' => CheckRoomOwnership::class,
+            'check-booking-ownership' => CheckBookingOwnership::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
@@ -70,11 +77,5 @@ return Application::configure(basePath: dirname(__DIR__))
                 'message' => $e->getMessage(),
                 'profile' => $e->getProfile()
             ], 409);
-        });
-        $exceptions->render(function (InvalidUserRoleException $e) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => $e->getMessage()
-            ], 403);
         });
     })->create();

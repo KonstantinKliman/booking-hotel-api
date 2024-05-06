@@ -31,8 +31,8 @@ class UserService implements IUserService
     public function register(RegisterRequest $request): array
     {
         $data = [
-            'email' => Arr::get($request->validated(), 'email'),
-            'password' => Hash::make(Arr::get($request->validated(), 'password'))
+            'email' => $request->validated('email'),
+            'password' => Hash::make($request->validated('password'))
         ];
         $user = $this->repository->create($data);
         $this->service->sendVerificationLink($user);
@@ -54,15 +54,11 @@ class UserService implements IUserService
     public function login(LoginRequest $request): array
     {
         $data = [
-            'email' => Arr::get($request->validated(), 'email'),
-            'password' => Arr::get($request->validated(), 'password')
+            'email' => $request->validated('email'),
+            'password' => $request->validated('password')
         ];
 
         $user = $this->repository->get(Arr::get($data, 'email'));
-
-        if (!$user->hasVerifiedEmail()) {
-            throw new EmailIsNotVerifiedException();
-        }
 
         if (!empty($user)) {
             if (Auth::attempt($data)) {

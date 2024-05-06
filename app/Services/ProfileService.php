@@ -34,10 +34,6 @@ class ProfileService implements IProfileService
      */
     public function create(CreateProfileRequest $request): array
     {
-        $profile = Profile::query()->where('user_id', $request->user()->id)->first();
-        if ($profile) {
-            throw new ProfileAlreadyExistsException($profile);
-        }
         $this->userService->setUserRole($request->user()->id, (int)$request->validated('roleType'));
         $data = array_filter([
             'user_id' => $request->user()->id,
@@ -88,7 +84,7 @@ class ProfileService implements IProfileService
 
         $profile = $this->repository->getById($id);
 
-        return [
+        return array_filter([
             'id' => $id,
             'firstName' => Arr::get($profile, 'first_name'),
             'lastName' => Arr::get($profile, 'last_name'),
@@ -97,7 +93,7 @@ class ProfileService implements IProfileService
             'companyName' => Arr::get($profile, 'company_name'),
             'country' => Arr::get($profile, 'country'),
             'city' => Arr::get($profile, 'city'),
-        ];
+        ]);
     }
 
     public function update(UpdateProfileRequest $request, int $id)
