@@ -17,13 +17,9 @@ class Profile extends Model
         'last_name',
         'dob',
         'phone',
-        'company_name', // if in users table role == 'owner'
+        'company_name', // if in users table role == 'owner'(id = 1)
         'country',
         'city',
-    ];
-
-    protected $casts = [
-        'dob' => 'date:d-m-Y',
     ];
 
     public function user(): BelongsTo

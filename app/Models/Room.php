@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,6 +10,7 @@ use App\Enums\RoomType as RoomTypeEnum;
 
 class Room extends Model
 {
+    use HasFactory;
 
     protected $table = 'rooms';
 
@@ -16,7 +18,6 @@ class Room extends Model
         'hotel_id',
         'type_id',
         'description',
-        'count',
         'price_per_night',
         'is_available'
     ];

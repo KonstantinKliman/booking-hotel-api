@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoomType as RoomTypeEnum;
 use App\Models\RoomType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +14,11 @@ class RoomTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        RoomType::create(['name' => 'single']);
-        RoomType::create(['name' => 'double']);
-        RoomType::create(['name' => 'twin']);
-        RoomType::create(['name' => 'suite']);
-        RoomType::create(['name' => 'standard']);
-        RoomType::create(['name' => 'family']);
+        RoomType::create(['name' => RoomTypeEnum::Single->name]);
+        RoomType::create(['name' => RoomTypeEnum::Double->name]);
+        RoomType::create(['name' => RoomTypeEnum::Twin->name]);
+        RoomType::create(['name' => RoomTypeEnum::Suite->name]);
+        RoomType::create(['name' => RoomTypeEnum::Standard->name]);
+        RoomType::create(['name' => RoomTypeEnum::Family->name]);
     }
 }
