@@ -18,5 +18,5 @@ interface IRoomService
 
     public function addImage(Request $request, int $id);
 
-    public function deleteImage(Request $request, int $roomId, int $imageId);
+    public function deleteImage(int $roomId, int $imageId);
 }
