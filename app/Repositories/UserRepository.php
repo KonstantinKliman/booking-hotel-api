@@ -20,11 +20,21 @@ class UserRepository implements IUserRepository
 
     public function getById(int $id)
     {
-        return User::query()->find($id);
+        return User::query()->findOrFail($id);
     }
 
     public function save(User $user)
     {
         $user->save();
+    }
+
+    public function updateUserRole(int $userId, int $roleId)
+    {
+        User::query()->where('id', $userId)->update(['role_id' => $roleId]);
+    }
+
+    public function update(int $userId, array $data)
+    {
+        User::query()->where('id', $userId)->update($data);
     }
 }

@@ -2,16 +2,16 @@
 
 namespace App\Services\Interfaces;
 
-use App\Http\Requests\Api\v1\User\LoginRequest;
-use App\Http\Requests\Api\v1\User\RegisterRequest;
-use App\Http\Requests\Api\v1\User\ResendEmailVerificationLinkRequest;
-use App\Http\Requests\Api\v1\User\VerifyEmailRequest;
+use App\Http\Requests\Api\v1\Auth\LoginRequest;
+use App\Http\Requests\Api\v1\Auth\RegisterRequest;
+use App\Http\Requests\Api\v1\Auth\ResendEmailVerificationLinkRequest;
+use App\Http\Requests\Api\v1\Auth\VerifyEmailRequest;
+use App\Http\Requests\Api\v1\User\UpdateUserRequest;
 
 interface IUserService
 {
-    public function register(RegisterRequest $request): array;
 
-    public function login(LoginRequest $request): array;
+    public function getById(int $id);
 
-    public function setUserRole(int $userId, int $roleId): void;
+    public function update(int $userId, UpdateUserRequest $request);
 }

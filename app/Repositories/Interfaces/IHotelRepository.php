@@ -17,4 +17,6 @@ interface IHotelRepository
     public function delete(int $id);
 
     public function all();
+
+    public function paginate(int $perPage = 10);
 }

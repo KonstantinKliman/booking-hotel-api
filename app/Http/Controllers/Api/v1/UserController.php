@@ -3,13 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\v1\User\LoginRequest;
-use App\Http\Requests\Api\v1\User\RegisterRequest;
-use App\Http\Requests\Api\v1\User\ResendEmailVerificationLinkRequest;
-use App\Http\Requests\Api\v1\User\VerifyEmailRequest;
+use App\Http\Requests\Api\v1\User\UpdateUserRequest;
 use App\Services\Interfaces\IUserService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -20,13 +15,13 @@ class UserController extends Controller
         $this->service = $service;
     }
 
-    public function register(RegisterRequest $request): JsonResponse
+    public function getById(int $userId)
     {
-        return response()->json($this->service->register($request), 201);
+        return response()->json($this->service->getById($userId));
     }
 
-    public function login(LoginRequest $request): JsonResponse
+    public function update(int $userId, UpdateUserRequest $request)
     {
-        return response()->json($this->service->login($request));
+        return response()->json($this->service->update($userId, $request));
     }
 }

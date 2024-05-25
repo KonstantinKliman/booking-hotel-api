@@ -13,4 +13,8 @@ interface IUserRepository
     public function getById(int $id);
 
     public function save(User $user);
+
+    public function updateUserRole(int $userId, int $roleId);
+
+    public function update(int $userId, array $data);
 }

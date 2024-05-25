@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests\Api\v1\User;
+namespace App\Http\Requests\Api\v1\Auth;
 
-use App\Enums\RoleType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

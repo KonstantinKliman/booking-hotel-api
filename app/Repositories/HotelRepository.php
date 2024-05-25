@@ -10,7 +10,7 @@ class HotelRepository implements IHotelRepository
 
     public function create(array $data)
     {
-        return Hotel::create($data)->toArray();
+        return Hotel::query()->create($data);
     }
 
     public function getById(int $id)
@@ -36,5 +36,10 @@ class HotelRepository implements IHotelRepository
     public function all()
     {
         return Hotel::all();
+    }
+
+    public function paginate(int $perPage = 10)
+    {
+        return Hotel::query()->paginate($perPage);
     }
 }

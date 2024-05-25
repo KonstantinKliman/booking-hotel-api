@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\AuthService;
 use App\Services\BookingService;
 use App\Services\HotelService;
+use App\Services\Interfaces\IAuthService;
 use App\Services\Interfaces\IBookingService;
 use App\Services\Interfaces\IHotelService;
 use App\Services\Interfaces\IProfileService;
@@ -14,7 +16,9 @@ use App\Services\ProfileService;
 use App\Services\RoomService;
 use App\Services\UserService;
 use App\Services\VerificationEmailService;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
+use Psy\Util\Json;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IHotelService::class, HotelService::class);
         $this->app->bind(IRoomService::class, RoomService::class);
         $this->app->bind(IBookingService::class, BookingService::class);
+        $this->app->bind(IAuthService::class, AuthService::class);
     }
 
     /**

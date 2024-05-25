@@ -15,7 +15,7 @@ class ProfileRepository implements IProfileRepository
 
     public function getById(int $id)
     {
-        return Profile::query()->where('id', $id)->first()->toArray();
+        return Profile::query()->where('id', $id)->first();
     }
 
     public function isExistsById(int $id): bool
@@ -31,5 +31,10 @@ class ProfileRepository implements IProfileRepository
     public function delete(int $id): void
     {
         Profile::destroy($id);
+    }
+
+    public function findOrFail(int $userId)
+    {
+        return Profile::findOrFail($userId);
     }
 }

@@ -15,4 +15,6 @@ interface IProfileRepository
     public function update(array $data, int $id);
 
     public function delete(int $id): void;
+
+    public function findOrFail(int $userId);
 }

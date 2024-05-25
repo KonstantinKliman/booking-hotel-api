@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
-use App\Enums\BookingStatusType;
 use App\Enums\RoleType;
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\Api\v1\Booking\CreateBookingRequest;
 use App\Http\Requests\Api\v1\Booking\UpdateBookingRequest;
-use App\Models\Booking;
+use App\Http\Resources\Api\v1\BookingResource;
 use App\Repositories\Interfaces\IBookingRepository;
 use App\Services\Interfaces\IBookingService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class BookingService implements IBookingService
@@ -40,19 +41,12 @@ class BookingService implements IBookingService
 
     public function getById(int $id)
     {
-        $booking = $this->repository->getById($id);
-        return [
-            'id' => $booking->id,
-            'userId' => $booking->user_id,
-            'roomId' => $booking->room_id,
-            'guestsCount' => $booking->guests_count,
-            'checkInDate' => $booking->check_in_date,
-            'checkOutDate' => $booking->check_out_date,
-            'bookingStatus' => $booking->bookingStatus->name,
-            'paymentStatus' => $booking->paymentStatus->name,
-            'totalPrice' => $booking->total_price,
-            'additionalComments' => $booking->additional_comments
-        ];
+        try {
+            $booking = $this->repository->getById($id);
+            return new BookingResource($booking);
+        } catch (ModelNotFoundException $e) {
+            throw new NotFoundException();
+        }
     }
 
     public function update(UpdateBookingRequest $request, int $id)
@@ -73,48 +67,21 @@ class BookingService implements IBookingService
     public function delete(int $id)
     {
         $this->repository->delete($id);
-        return [
-            'status' => 'success'
-        ];
     }
 
     public function list(Request $request)
     {
-        $bookings = $this->repository->all();
-
         $result = [];
 
         if ($request->user()->role->id == RoleType::Customer->value) {
             foreach ($this->repository->getForCustomer($request->user()->id) as $booking) {
-                $result[] = [
-                    'id' => $booking->id,
-                    'userId' => $booking->user_id,
-                    'roomId' => $booking->room_id,
-                    'guestsCount' => $booking->guests_count,
-                    'checkInDate' => $booking->check_in_date,
-                    'checkOutDate' => $booking->check_out_date,
-                    'bookingStatus' => $booking->bookingStatus->name,
-                    'paymentStatus' => $booking->paymentStatus->name,
-                    'totalPrice' => $booking->total_price,
-                    'additionalComments' => $booking->additional_comments
-                ];
+                $result[] = new BookingResource($booking);
             }
         }
 
         if ($request->user()->role->id == RoleType::Owner->value) {
             foreach ($this->repository->getForOwner($request->user()->id) as $booking) {
-                $result[] = [
-                    'id' => $booking->id,
-                    'userId' => $booking->user_id,
-                    'roomId' => $booking->room_id,
-                    'guestsCount' => $booking->guests_count,
-                    'checkInDate' => $booking->check_in_date,
-                    'checkOutDate' => $booking->check_out_date,
-                    'bookingStatus' => $booking->bookingStatus->name,
-                    'paymentStatus' => $booking->paymentStatus->name,
-                    'totalPrice' => $booking->total_price,
-                    'additionalComments' => $booking->additional_comments
-                ];
+                $result[] = new BookingResource($booking);
             }
         }
 

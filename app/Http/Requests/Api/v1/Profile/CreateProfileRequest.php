@@ -14,7 +14,7 @@ class CreateProfileRequest extends FormRequest
             'firstName' => ['required', 'string', 'max:255'],
             'lastName' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'regex:/^\+\d{11}$/'],
-            'dob' => ['required', 'date', 'date_format:d-m-Y'],
+            'dob' => ['required', 'date'],
             'roleType' => ['required', 'integer', Rule::enum(RoleType::class)], // 1 - owner, 2 - customer
             'companyName' => ['nullable', 'string', 'max:255', Rule::requiredIf(fn () => $this->input('roleType') === RoleType::Owner->value)], // Only required if roleType is 'owner'
             'country' => ['required', 'string', 'max:255'],

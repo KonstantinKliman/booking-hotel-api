@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\Api\v1\Room\CreateRoomRequest;
 use App\Http\Requests\Api\v1\Room\UpdateRoomRequest;
-use App\Models\Hotel;
-use App\Repositories\Interfaces\IHotelRepository;
+use App\Http\Resources\Api\v1\RoomResource;
 use App\Repositories\Interfaces\IImageRepository;
 use App\Repositories\Interfaces\IRoomRepository;
 use App\Services\Interfaces\IRoomService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -40,27 +40,17 @@ class RoomService implements IRoomService
 
         $room = $this->repository->create($data);
 
-        return [
-            'id' => $room->id,
-            'hotelId' => $room->hotel_id,
-            'type' => $room->type->name,
-            'description' => $room->description,
-            'pricePerNight' => $room->price_per_night,
-            'isAvailable' => $room->is_available
-        ];
+        return new RoomResource($room);
     }
 
     public function getById(int $roomId)
     {
-        $room = $this->repository->getById($roomId);
-        return [
-            'id' => $room->id,
-            'hotelId' => $room->hotel_id,
-            'type' => $room->type->name,
-            'description' => $room->description,
-            'pricePerNight' => $room->price_per_night,
-            'isAvailable' => $room->is_available
-        ];
+        try {
+            $room = $this->repository->getById($roomId);
+            return new RoomResource($room);
+        } catch (ModelNotFoundException $e) {
+            throw new NotFoundException();
+        }
     }
 
     public function update(UpdateRoomRequest $request, int $roomId)
@@ -114,7 +104,7 @@ class RoomService implements IRoomService
         return $arrayImagePaths;
     }
 
-    public function deleteImage(Request $request, int $roomId, int $imageId)
+    public function deleteImage(int $roomId, int $imageId)
     {
         $room = $this->repository->getById($roomId);
         $image = $this->imageRepository->getImage($imageId);

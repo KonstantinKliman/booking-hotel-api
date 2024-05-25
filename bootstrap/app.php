@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\NotFoundException;
 use App\Exceptions\Profile\ProfileAlreadyExistsException;
 use App\Exceptions\Profile\ProfileNotFoundException;
 use App\Exceptions\User\EmailIsNotVerifiedException;
@@ -10,7 +11,9 @@ use App\Exceptions\User\InvalidUserCredentialsException;
 use App\Http\Middleware\CheckBookingOwnership;
 use App\Http\Middleware\CheckEmailIsVerifiedMiddleware;
 use App\Http\Middleware\CheckHotelOwnership;
+use App\Http\Middleware\CheckProfileEditAccess;
 use App\Http\Middleware\CheckRoomOwnership;
+use App\Http\Middleware\CheckUserEditAccess;
 use App\Http\Middleware\CheckUserRoleIsCustomerMiddleware;
 use App\Http\Middleware\CheckUserRoleIsOwnerMiddleware;
 use Illuminate\Foundation\Application;
@@ -19,7 +22,6 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
@@ -32,6 +34,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'check-hotel-ownership' => CheckHotelOwnership::class,
             'check-room-ownership' => CheckRoomOwnership::class,
             'check-booking-ownership' => CheckBookingOwnership::class,
+            'check-user-edit-access' => CheckUserEditAccess::class,
+            'check-profile-edit-access' => CheckProfileEditAccess::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
@@ -67,7 +71,6 @@ return Application::configure(basePath: dirname(__DIR__))
         });
         $exceptions->render(function (ProfileNotFoundException $e) {
             return response()->json([
-                'status' => 'failed',
                 'message' => $e->getMessage(),
             ], 404);
         });
@@ -77,5 +80,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 'message' => $e->getMessage(),
                 'profile' => $e->getProfile()
             ], 409);
+        });
+        $exceptions->render(function (NotFoundException $e) {
+            return response()->json(null, $e->getCode());
         });
     })->create();

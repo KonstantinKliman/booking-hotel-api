@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Http\Requests\Api\v1\Hotel\CreateHotelRequest;
 use App\Http\Requests\Api\v1\Hotel\UpdateHotelRequest;
+use App\Http\Resources\Api\v1\HotelCollection;
+use App\Http\Resources\Api\v1\HotelResource;
 use App\Models\Hotel;
 use App\Models\Image;
 use App\Repositories\Interfaces\IHotelRepository;
@@ -44,27 +46,14 @@ class HotelService implements IHotelService
 
         $hotel = $this->repository->create($data);
 
-        return [
-            'id' => $hotel->id,
-            'userId' => $hotel->user_id,
-            'name' => $hotel->name,
-            'address' => $hotel->address,
-            'starRating' => $hotel->star_rating,
-            'description' => $hotel->description
-        ];
+        return new HotelResource($hotel);
     }
 
     public function getById(int $id)
     {
         $hotel = $this->repository->getById($id);
 
-        return [
-            'userId' => $hotel->user_id,
-            'name' => $hotel->name,
-            'address' => $hotel->address,
-            'starRating' => $hotel->star_rating,
-            'description' => $hotel->description
-        ];
+        return new HotelResource($hotel);
     }
 
     public function update(UpdateHotelRequest $request, int $id)
@@ -100,21 +89,9 @@ class HotelService implements IHotelService
 
     public function list()
     {
-        $hotels = $this->repository->all();
+        $hotels = $this->repository->paginate();
 
-        $list = [];
-
-        foreach ($hotels as $hotel) {
-            $list[] = [
-                'userId' => $hotel->user_id,
-                'name' => $hotel->name,
-                'address' => $hotel->address,
-                'starRating' => $hotel->star_rating,
-                'description' => $hotel->description
-            ];
-        }
-
-        return $list;
+        return new HotelCollection($hotels);
     }
 
 
