@@ -12,7 +12,7 @@ interface IHotelService
 
     public function getById(int $id);
 
-    public function addImage(Request $request, int $id);
+    public function addImage(Request $request, int $hotelId);
 
     public function deleteImage(Request $request, int $hotelId, int $imageId);
 

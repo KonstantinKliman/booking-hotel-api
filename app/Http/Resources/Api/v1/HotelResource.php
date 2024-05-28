@@ -22,8 +22,8 @@ class HotelResource extends JsonResource
             'address' => $this->address,
             'starRating' => $this->star_rating,
             'description' => $this->description,
-            'images' => $this->when($this->images->isNotEmpty(), ImageResource::collection($this->images)),
-            'rooms' => $this->when($this->rooms->isNotEmpty(), RoomResource::collection($this->rooms)),
+            'imageIds' => $this->when($this->images->isNotEmpty(), $this->images->pluck('id')),
+            'roomIds' => $this->when($this->rooms->isNotEmpty(), $this->rooms->pluck('id')),
         ];
     }
 }

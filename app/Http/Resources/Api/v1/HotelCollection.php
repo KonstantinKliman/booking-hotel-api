@@ -15,7 +15,7 @@ class HotelCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'data' => HotelResource::collection($this->collection),
+            'hotels' => HotelResource::collection($this->collection),
             'meta' => [
                 'current_page' => $this->currentPage(),
                 'last_page' => $this->lastPage(),

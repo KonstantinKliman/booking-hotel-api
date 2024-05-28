@@ -8,6 +8,6 @@ Route::prefix('rooms')->middleware(['auth:sanctum', 'verified-email'])->group(fu
     Route::get('/{roomId}', [RoomController::class, 'getById']);
     Route::patch('/{roomId}', [RoomController::class, 'update'])->middleware(['owner-role', 'check-room-ownership']);
     Route::delete('/{roomId}', [RoomController::class, 'delete'])->middleware(['owner-role', 'check-room-ownership']);
-    Route::post('/{roomId}/image', [RoomController::class, 'addImage'])->middleware(['owner-role', 'check-room-ownership']);
-    Route::delete('/{roomId}/image/{imageId}', [RoomController::class, 'deleteImage'])->middleware(['owner-role', 'check-room-ownership']);
+    Route::post('/{roomId}/images', [RoomController::class, 'addImage'])->middleware(['owner-role', 'check-room-ownership']);
+    Route::delete('/{roomId}/images/{imageId}', [RoomController::class, 'deleteImage'])->middleware(['owner-role', 'check-room-ownership']);
 });

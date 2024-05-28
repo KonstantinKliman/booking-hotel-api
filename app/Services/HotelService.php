@@ -6,6 +6,8 @@ use App\Http\Requests\Api\v1\Hotel\CreateHotelRequest;
 use App\Http\Requests\Api\v1\Hotel\UpdateHotelRequest;
 use App\Http\Resources\Api\v1\HotelCollection;
 use App\Http\Resources\Api\v1\HotelResource;
+use App\Http\Resources\Api\v1\ImageCollection;
+use App\Http\Resources\Api\v1\ImageResource;
 use App\Models\Hotel;
 use App\Models\Image;
 use App\Repositories\Interfaces\IHotelRepository;
@@ -70,7 +72,7 @@ class HotelService implements IHotelService
         return $this->getById($id);
     }
 
-    public function delete(int $id): array
+    public function delete(int $id)
     {
         $images = $this->imageRepository->getByHotelId($id);
 
@@ -82,9 +84,6 @@ class HotelService implements IHotelService
         Storage::deleteDirectory($directory);
 
         $this->repository->delete($id);
-        return [
-            'message' => 'Hotel successfully deleted.'
-        ];
     }
 
     public function list()
@@ -94,20 +93,32 @@ class HotelService implements IHotelService
         return new HotelCollection($hotels);
     }
 
-
-    public function addImage(Request $request, int $id)
+    /*
+     * TODO: Необходимо вернуть JSON строку в виде:
+     * {
+     *      [
+     *          "id" : 1,
+     *          "url" : imageUrl1
+     *      ],
+     *      [
+     *          "id": 2,
+     *          "url": imageUrl2
+     *      ]
+     * }
+     *
+     */
+    public function addImage(Request $request, int $hotelId)
     {
-        $hotel = $this->repository->getById($id);
+        $hotel = $this->repository->getById($hotelId);
         $imagePath = self::HOTEL_IMAGE_PATH . $hotel->id;
-        $arrayImagePaths = [];
 
         foreach ($request->file() as $file) {
             $image = $this->imageRepository->create($file->getClientOriginalName(), self::STORAGE_PATH . $imagePath . '/');
             $this->imageRepository->attachHotelToImage($hotel, $image);
-            $arrayImagePaths[] = $this->getAppUrl() . self::STORAGE_PATH . Storage::putFileAs($imagePath, $file, $file->getClientOriginalName());
         }
 
-        return $arrayImagePaths;
+
+        return ImageResource::collection($hotel->images);
     }
 
     public function deleteImage(Request $request, int $hotelId, int $imageId)

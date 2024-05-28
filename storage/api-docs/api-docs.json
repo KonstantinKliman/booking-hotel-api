@@ -1,0 +1,590 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Booking hotel API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация пользователя",
+                "operationId": "781a60fa12e59c4c19bc1327e29dc3a4",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "email": {
+                                                "type": "string",
+                                                "example": "email@example.com"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "password"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|QOshmvynOwLP8o6dobkhthcaKb8a5YGAeOM37o8v9f39eb0b"
+                                        },
+                                        "tokenType": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/hotels": {
+            "get": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "Список отелей",
+                "operationId": "c164c5909b2bdd06bdf0523ca78b31c8",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "hotels": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "userId": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Hotel name"
+                                                    },
+                                                    "address": {
+                                                        "type": "string",
+                                                        "example": "Hotel address"
+                                                    },
+                                                    "starRating": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Hotel description"
+                                                    },
+                                                    "imageIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "integer",
+                                                            "example": [
+                                                                1,
+                                                                2,
+                                                                3
+                                                            ]
+                                                        }
+                                                    },
+                                                    "roomIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "integer",
+                                                            "example": [
+                                                                1,
+                                                                2,
+                                                                3
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "Создание отеля",
+                "operationId": "9a98f9bbba9c4e0ea06dcd8422079ed0",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Hotel name"
+                                            },
+                                            "address": {
+                                                "type": "string",
+                                                "example": "Hotel address"
+                                            },
+                                            "starRating": {
+                                                "type": "integer",
+                                                "example": 5
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "Hotel description"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "userId": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Hotel name"
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Hotel address"
+                                        },
+                                        "starRating": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Hotel description"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/hotels/{hotelId}": {
+            "get": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "Получение одного отеля",
+                "operationId": "8d96152636bebf12c34497e5ddc3ad80",
+                "parameters": [
+                    {
+                        "name": "hotelId",
+                        "in": "path",
+                        "description": "ID отеля",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "hotels": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "userId": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Hotel name"
+                                                    },
+                                                    "address": {
+                                                        "type": "string",
+                                                        "example": "Hotel address"
+                                                    },
+                                                    "starRating": {
+                                                        "type": "integer",
+                                                        "example": 5
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Hotel description"
+                                                    },
+                                                    "imageIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "integer",
+                                                            "example": [
+                                                                1,
+                                                                2,
+                                                                3
+                                                            ]
+                                                        }
+                                                    },
+                                                    "roomIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "integer",
+                                                            "example": [
+                                                                1,
+                                                                2,
+                                                                3
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "Удаление одного отеля",
+                "operationId": "5f431647ed0f5d8229b8a1ee78b3d803",
+                "parameters": [
+                    {
+                        "name": "hotelId",
+                        "in": "path",
+                        "description": "ID отеля",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": []
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "Обновление одного отеля",
+                "operationId": "711c9c3fe08481c71c38075ea997c69b",
+                "parameters": [
+                    {
+                        "name": "hotelId",
+                        "in": "path",
+                        "description": "ID отеля",
+                        "required": true,
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "New hotel name"
+                                            },
+                                            "address": {
+                                                "type": "string",
+                                                "example": "New hotel address"
+                                            },
+                                            "starRating": {
+                                                "type": "integer",
+                                                "example": 4
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "New hotel description"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "hotels": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "userId": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "New hotel name"
+                                                    },
+                                                    "address": {
+                                                        "type": "string",
+                                                        "example": "New hotel address"
+                                                    },
+                                                    "starRating": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "New hotel description"
+                                                    },
+                                                    "imageIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "integer",
+                                                            "example": [
+                                                                1,
+                                                                2,
+                                                                3
+                                                            ]
+                                                        }
+                                                    },
+                                                    "roomIds": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "integer",
+                                                            "example": [
+                                                                1,
+                                                                2,
+                                                                3
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/hotels/{hotelId}/images": {
+            "post": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "Создание изображения для отеля",
+                "operationId": "4799654988aaa9c44e5b88f4975f5280",
+                "parameters": [
+                    {
+                        "name": "hotelId",
+                        "in": "path",
+                        "description": "ID отеля",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Изображение для загрузки",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "url": {
+                                                "type": "string",
+                                                "example": "http://localhost/storage/hotel/1/1.jpg"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/hotels/{hotelId}/images/{imageId}": {
+            "delete": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "Удаления изображения для отеля",
+                "operationId": "6c95785e213de1cad6916056226afcd8",
+                "parameters": [
+                    {
+                        "name": "hotelId",
+                        "in": "path",
+                        "description": "ID отеля",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "imageId",
+                        "in": "path",
+                        "description": "ID изображения",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": []
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}

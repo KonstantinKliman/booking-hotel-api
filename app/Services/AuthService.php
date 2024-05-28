@@ -61,8 +61,8 @@ class AuthService implements IAuthService
         if (!empty($user)) {
             if (Auth::attempt($data)) {
                 return [
-                    'message' => 'User successfully logged in.',
-                    'token' => $user->createToken('api-token')->plainTextToken
+                    'token' => $user->createToken('api-token')->plainTextToken,
+                    'tokenType' => 'bearer'
                 ];
             }
         }
