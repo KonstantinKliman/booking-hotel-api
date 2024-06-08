@@ -79,9 +79,7 @@ class RoomService implements IRoomService
         Storage::deleteDirectory($directory);
 
         $this->repository->delete($roomId);
-        return [
-            'message' => 'success'
-        ];
+        return null;
     }
 
     private function getAppUrl()

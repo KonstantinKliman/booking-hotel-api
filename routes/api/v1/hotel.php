@@ -11,5 +11,4 @@ Route::prefix('hotels')->middleware(['auth:sanctum','verified-email'])->group(fu
     Route::delete('/{hotelId}', [HotelController::class, 'delete'])->middleware(['owner-role', 'check-hotel-ownership']);
     Route::post('/{hotelId}/images', [HotelController::class, 'addImage'])->middleware(['owner-role', 'check-hotel-ownership']);
     Route::delete('/{hotelId}/images/{imageId}', [HotelController::class, 'deleteImage'])->middleware(['owner-role', 'check-hotel-ownership']);
-
 });

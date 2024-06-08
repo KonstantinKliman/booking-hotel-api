@@ -20,7 +20,7 @@ class RoomResource extends JsonResource
             'description' => $this->description,
             'pricePerNight' => $this->price_per_night,
             'isAvailable' => $this->is_available,
-            'images' => $this->when($this->images->isNotEmpty(), $this->image->pluck('id')),
+            'images' => $this->when($this->images->isNotEmpty(), ImageResource::collection($this->images)),
         ];
     }
 }

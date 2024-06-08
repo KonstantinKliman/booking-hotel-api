@@ -30,4 +30,9 @@ class Image extends Model
     {
         return $this->belongsToMany(Room::class, 'room_image', 'image_id', 'room_id');
     }
+
+    public function getImageUrl()
+    {
+        return config('app.url') . '/' . $this->path . $this->filename;
+    }
 }

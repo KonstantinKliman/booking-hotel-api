@@ -25,7 +25,7 @@ use App\Http\Controllers\Controller;
  *
  *      @OA\Response(
  *          response=201,
- *          description="Ok",
+ *          description="Created",
  *          @OA\JsonContent(
  *              @OA\Property(property="id", type="integer", example=1),
  *              @OA\Property(property="userId", type="integer", example=1),

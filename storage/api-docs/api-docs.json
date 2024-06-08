@@ -60,6 +60,105 @@
                 }
             }
         },
+        "/api/v1/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация пользователя",
+                "operationId": "6e52ff23aa9cea46fb54b8ebcee89517",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "email": {
+                                                "type": "string",
+                                                "example": "email@example.com"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "password"
+                                            },
+                                            "passwordConfirmation": {
+                                                "type": "string",
+                                                "example": "password"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|QOshmvynOwLP8o6dobkhthcaKb8a5YGAeOM37o8v9f39eb0b"
+                                        },
+                                        "tokenType": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/resend_email_verification_link": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Отправить новую ссылку на подтверждение электронной почты",
+                "operationId": "db1c313ac84ce73d0f5aaa07a380bcb9",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "email": {
+                                                "type": "string",
+                                                "example": "email@example.com"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": []
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/hotels": {
             "get": {
                 "tags": [
@@ -175,7 +274,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Ok",
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -541,6 +640,387 @@
                         "name": "hotelId",
                         "in": "path",
                         "description": "ID отеля",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "imageId",
+                        "in": "path",
+                        "description": "ID изображения",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": []
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/rooms": {
+            "post": {
+                "tags": [
+                    "Rooms"
+                ],
+                "summary": "Создание комнаты",
+                "operationId": "0cebc748aaf2b0385b4a9c63674e304a",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "hotelId": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "typeId": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "description for room"
+                                            },
+                                            "pricePerNight": {
+                                                "type": "integer",
+                                                "example": 1000
+                                            },
+                                            "isAvailable": {
+                                                "type": "boolean",
+                                                "example": "true"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "example": "Single"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "description for room"
+                                        },
+                                        "pricePerNight": {
+                                            "type": "integer",
+                                            "example": 1000
+                                        },
+                                        "isAvailable": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/rooms/{roomId}": {
+            "get": {
+                "tags": [
+                    "Rooms"
+                ],
+                "summary": "Получение одной комнаты",
+                "operationId": "ca8ae37a0f9171819eaf48712dfd8de7",
+                "parameters": [
+                    {
+                        "name": "roomId",
+                        "in": "path",
+                        "description": "ID комнаты",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "example": "Single"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "description for room"
+                                        },
+                                        "pricePerNight": {
+                                            "type": "integer",
+                                            "example": 1000
+                                        },
+                                        "isAvailable": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Rooms"
+                ],
+                "summary": "Удаление одной комнаты",
+                "operationId": "5379d30dd43a77c847914a309854c3b7",
+                "parameters": [
+                    {
+                        "name": "roomId",
+                        "in": "path",
+                        "description": "ID комнаты",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": []
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Rooms"
+                ],
+                "summary": "Обновление комнаты",
+                "operationId": "ba63ced8dc110146a059aaab518ab291",
+                "parameters": [
+                    {
+                        "name": "roomId",
+                        "in": "path",
+                        "description": "ID комнаты",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "typeId": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "description for room"
+                                            },
+                                            "pricePerNight": {
+                                                "type": "integer",
+                                                "example": 1000
+                                            },
+                                            "isAvailable": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "typeId": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "description for room"
+                                        },
+                                        "pricePerNight": {
+                                            "type": "integer",
+                                            "example": 1000
+                                        },
+                                        "isAvailable": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/rooms/{roomId}/images": {
+            "post": {
+                "tags": [
+                    "Rooms"
+                ],
+                "summary": "Создание изображения для комнаты",
+                "operationId": "f5feb085f3852b3628d6c9164fc829a0",
+                "parameters": [
+                    {
+                        "name": "roomId",
+                        "in": "path",
+                        "description": "ID комнаты",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Изображение для загрузки",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "url": {
+                                                "type": "string",
+                                                "example": "http://localhost/storage/hotel/1/room/1/1.jpg"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/rooms/{roomId}/images/{imageId}": {
+            "delete": {
+                "tags": [
+                    "Rooms"
+                ],
+                "summary": "Удаления изображения для комнаты",
+                "operationId": "60fe70c7e75edefb5429a319ba8fad78",
+                "parameters": [
+                    {
+                        "name": "roomId",
+                        "in": "path",
+                        "description": "ID комнаты",
                         "required": true,
                         "schema": {
                             "type": "integer"

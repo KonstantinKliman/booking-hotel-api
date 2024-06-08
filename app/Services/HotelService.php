@@ -93,20 +93,6 @@ class HotelService implements IHotelService
         return new HotelCollection($hotels);
     }
 
-    /*
-     * TODO: Необходимо вернуть JSON строку в виде:
-     * {
-     *      [
-     *          "id" : 1,
-     *          "url" : imageUrl1
-     *      ],
-     *      [
-     *          "id": 2,
-     *          "url": imageUrl2
-     *      ]
-     * }
-     *
-     */
     public function addImage(Request $request, int $hotelId)
     {
         $hotel = $this->repository->getById($hotelId);

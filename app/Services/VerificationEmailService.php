@@ -85,10 +85,7 @@ class VerificationEmailService implements IVerificationEmailService
             throw new FailedEmailVerificationTokenException();
         }
         $verifiedToken->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Email has been verified successfully'
-        ]);
+        return response()->json(null , 200);
     }
 
     public function resendLink(string $email)
@@ -98,9 +95,6 @@ class VerificationEmailService implements IVerificationEmailService
             throw new InvalidUserCredentialsException();
         }
         $this->sendVerificationLink($user);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Verification link send successfully'
-        ]);
+        return response()->json(null, 200);
     }
 }

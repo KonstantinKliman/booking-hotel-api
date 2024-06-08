@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Swagger;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Config;
 
 /**
  * @OA\Post(
@@ -53,6 +52,25 @@ use Illuminate\Support\Facades\Config;
  *           )
  *      )
  *  ),
+ * @OA\Post(
+ *      path="/api/v1/auth/resend_email_verification_link",
+ *      summary="Отправить новую ссылку на подтверждение электронной почты",
+ *      tags={"Auth"},
+ *      @OA\RequestBody(
+ *          @OA\JsonContent(
+ *              allOf={
+ *                   @OA\Schema(
+ *                       @OA\Property(property="email", type="string", example="email@example.com"),
+ *                   )
+ *              }
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=200,
+ *          description="Ok",
+ *          @OA\JsonContent(type="object", example={})
+ *      )
+ * )
  */
 
 class AuthController extends Controller

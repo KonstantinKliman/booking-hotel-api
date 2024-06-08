@@ -22,7 +22,7 @@ class HotelResource extends JsonResource
             'address' => $this->address,
             'starRating' => $this->star_rating,
             'description' => $this->description,
-            'imageIds' => $this->when($this->images->isNotEmpty(), $this->images->pluck('id')),
+            'images' => $this->when($this->images->isNotEmpty(), ImageResource::collection($this->images)),
             'roomIds' => $this->when($this->rooms->isNotEmpty(), $this->rooms->pluck('id')),
         ];
     }
